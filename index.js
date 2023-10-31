@@ -22,14 +22,20 @@ app.get('/climate', async (_, res) => {
 });
 
 app.post('/climate', async (req, res) => {
+  console.log('Query: ', req.query)
+  const temp = req.query.temp
+  const hum = req.query.hum
+
   const { error } = await supabaseClient
     .from('climate')
-    .insert({ temperature: req.body.temperature, humidity: req.body.humidity });
+    .insert({ temperature: temp, humidity: hum });
 
   if (error) {
+    console.log("Error: ", error)
     return res.status(400).json({ error: 'Something went wrong' });
   }
 
+  console.log("Success")
   return res.status(201).json({ message: 'Added new climate change' });
 });
 
